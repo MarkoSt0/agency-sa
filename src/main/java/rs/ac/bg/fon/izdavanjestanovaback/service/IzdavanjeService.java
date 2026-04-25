@@ -5,7 +5,6 @@
 package rs.ac.bg.fon.izdavanjestanovaback.service;
 
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +23,6 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.Izdavanje;
 import rs.ac.bg.fon.izdavanjestanovaback.jparepository.IzdavanjeRepo;
 import rs.ac.bg.fon.izdavanjestanovaback.jparepository.KlijentRepo;
 import rs.ac.bg.fon.izdavanjestanovaback.jparepository.NekretninaRepo;
-import rs.ac.bg.fon.izdavanjestanovaback.mapper.AgentMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.KlijentMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.StavkaIzdavanjaMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
@@ -96,7 +94,7 @@ public class IzdavanjeService {
             if (klijentOpt.isEmpty()) {
                 return ServiceResult.failure("Klijent sa ID " + dto.getKlijent().getId() + " ne postoji");
             }
-            izdavanje.setKlijent(klijentOpt.get());
+            izdavanje.setIdKlijent(klijentOpt.get());
 
             // Provera i povezivanje postojećeg agenta
             if (dto.getAgent() == null || dto.getAgent().getId() == null) {
@@ -106,7 +104,7 @@ public class IzdavanjeService {
             if (agentOpt.isEmpty()) {
                 return ServiceResult.failure("Agent sa ID " + dto.getAgent().getId() + " ne postoji");
             }
-            izdavanje.setAgent(agentOpt.get());
+            izdavanje.setIdAgent(agentOpt.get());
             
             if (izdavanje.getStavkaIzdavanjaCollection() != null) {
                 long rbCounter = 1;
@@ -146,7 +144,7 @@ public class IzdavanjeService {
             if (agentOpt.isEmpty()) {
                 return ServiceResult.failure("Agent sa ID " + dto.getAgent().getId() + " ne postoji");
             }
-            izdavanje.setAgent(agentOpt.get());
+            izdavanje.setIdAgent(agentOpt.get());
 
             if (dto.getKlijent() == null || dto.getKlijent().getId() == 0) {
                 return ServiceResult.failure("Klijent mora biti naveden");
@@ -155,7 +153,7 @@ public class IzdavanjeService {
             if (klijentOpt.isEmpty()) {
                 return ServiceResult.failure("Klijent sa ID " + dto.getKlijent().getId() + " ne postoji");
             }
-            izdavanje.setKlijent(klijentOpt.get());
+            izdavanje.setIdKlijent(klijentOpt.get());
             
             izdavanjeMapper.updateEntityFromDTO(dto, izdavanje);
             

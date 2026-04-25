@@ -30,8 +30,8 @@ public class IzdavanjeMapper {
         dto.setNacinPlacanja(izdavanje.getNacinPlacanja());
         dto.setUkupanIznos(izdavanje.getUkupanIznos());
         dto.setNapomena(izdavanje.getNapomena());
-        dto.setAgent(agentMapper.toDTO(izdavanje.getAgent()));
-        dto.setKlijent(klijentMapper.toDTO(izdavanje.getKlijent()));
+        dto.setAgent(agentMapper.toDTO(izdavanje.getIdAgent()));
+        dto.setKlijent(klijentMapper.toDTO(izdavanje.getIdKlijent()));
 
         if (izdavanje.getStavkaIzdavanjaCollection() != null) {
             dto.setStavke(stavkaMapper.toDTOList(
@@ -52,8 +52,8 @@ public class IzdavanjeMapper {
         izdavanje.setNacinPlacanja(dto.getNacinPlacanja());
         izdavanje.setUkupanIznos(dto.getUkupanIznos());
         izdavanje.setNapomena(dto.getNapomena());
-        izdavanje.setAgent(agentMapper.toEntity(dto.getAgent()));
-        izdavanje.setKlijent(klijentMapper.toEntity(dto.getKlijent()));
+        izdavanje.setIdAgent(agentMapper.toEntity(dto.getAgent()));
+        izdavanje.setIdKlijent(klijentMapper.toEntity(dto.getKlijent()));
 
         if (dto.getStavke() != null) {
             izdavanje.setStavkaIzdavanjaCollection(stavkaMapper.toEntityList(dto.getStavke()));

@@ -1,32 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.izdavanjestanovaback.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.util.Objects;
+import jakarta.persistence.*;
+import lombok.Data;
 
 /**
  *
  * @author Marko
  */
 @Entity
+@Data
 @Table(name = "stavka_izdavanja")
 @IdClass(StavkaIzdavanjaPK.class)
 @NamedQueries({
@@ -68,95 +52,5 @@ public class StavkaIzdavanja implements Serializable {
 
     public StavkaIzdavanja(Long rb) {
         this.rb = rb;
-    }
-
-    public Long getRb() {
-        return rb;
-    }
-
-    public void setRb(Long rb) {
-        this.rb = rb;
-    }
-
-    public Date getDatumPocetkaIzdavanja() {
-        return datumPocetkaIzdavanja;
-    }
-
-    public void setDatumPocetkaIzdavanja(Date datumPocetkaIzdavanja) {
-        this.datumPocetkaIzdavanja = datumPocetkaIzdavanja;
-    }
-
-    public Date getDatumZavrsetkaIzdavanja() {
-        return datumZavrsetkaIzdavanja;
-    }
-
-    public void setDatumZavrsetkaIzdavanja(Date datumZavrsetkaIzdavanja) {
-        this.datumZavrsetkaIzdavanja = datumZavrsetkaIzdavanja;
-    }
-
-    public Double getMesecnaKirija() {
-        return mesecnaKirija;
-    }
-
-    public void setMesecnaKirija(Double mesecnaKirija) {
-        this.mesecnaKirija = mesecnaKirija;
-    }
-
-    public Double getIznosDepozita() {
-        return iznosDepozita;
-    }
-
-    public void setIznosDepozita(Double iznosDepozita) {
-        this.iznosDepozita = iznosDepozita;
-    }
-
-    public Izdavanje getIdIzdavanje() {
-        return idIzdavanje;
-    }
-
-    public void setIdIzdavanje(Izdavanje idIzdavanje) {
-        this.idIzdavanje = idIzdavanje;
-    }
-
-    public Nekretnina getIdNekretnina() {
-        return idNekretnina;
-    }
-
-    public void setIdNekretnina(Nekretnina idNekretnina) {
-        this.idNekretnina = idNekretnina;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + Objects.hashCode(this.rb);
-        hash = 19 * hash + Objects.hashCode(this.idIzdavanje);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final StavkaIzdavanja other = (StavkaIzdavanja) obj;
-        if (!Objects.equals(this.rb, other.rb)) {
-            return false;
-        }
-        return Objects.equals(this.idIzdavanje, other.idIzdavanje);
-    }
-
-    @Override
-    public String toString() {
-        return "StavkaIzdavanja{" + "rb=" + rb + ", datumPocetkaIzdavanja=" + datumPocetkaIzdavanja + ", datumZavrsetkaIzdavanja=" + datumZavrsetkaIzdavanja + ", mesecnaKirija=" + mesecnaKirija + ", iznosDepozita=" + iznosDepozita + ", idIzdavanje=" + idIzdavanje + ", idNekretnina=" + idNekretnina + '}';
-    }
-
-    
-    
+    }    
 }
