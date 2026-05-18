@@ -46,6 +46,8 @@ public class Agent implements Serializable {
     private String sifra;
     @OneToMany(mappedBy = "idAgent")
     private Collection<Izdavanje> izdavanjeCollection;
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Sertifikat> sertifikatCollection;
 
     public Agent() {
     }

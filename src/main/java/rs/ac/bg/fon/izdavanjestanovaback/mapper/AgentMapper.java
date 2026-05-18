@@ -4,6 +4,7 @@
  */
 package rs.ac.bg.fon.izdavanjestanovaback.mapper;
 
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.izdavanjestanovaback.dto.AgentDTO;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
@@ -14,11 +15,12 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
  */
 @Component
 public class AgentMapper {
+    
+    private final SertifikatMapper sertifikatMapper = new SertifikatMapper();
 
     public AgentDTO toDTO(Agent agent) {
         if (agent == null) return null;
-
-        return new AgentDTO(
+        AgentDTO dto = new AgentDTO(
             agent.getId(),
             agent.getBrojLicence(),
             agent.getDatumIstekaLicence(),
@@ -27,6 +29,13 @@ public class AgentMapper {
             agent.getKorisnickoIme(),
             agent.getSifra()
         );
+        if (agent.getSertifikatCollection()!= null) {
+            dto.setSertifikati(agent.getSertifikatCollection().stream()
+                .map(sertifikatMapper::toDTO)
+                .collect(Collectors.toList()));
+        }
+
+        return dto;
     }
     
     public Agent toEntity(AgentDTO dto) {

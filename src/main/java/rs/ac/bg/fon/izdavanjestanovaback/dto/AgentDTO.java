@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.izdavanjestanovaback.dto;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -18,6 +19,7 @@ public class AgentDTO {
     private String prezime;
     private String korisnickoIme;
     private String sifra;
+    private List<SertifikatDTO> sertifikati;
 
     public AgentDTO() {
     }
@@ -88,5 +90,11 @@ public class AgentDTO {
         this.korisnickoIme = korisnickoIme;
     }
 
-    
+    public List<SertifikatDTO> getSertifikati() {
+        return sertifikati;
+    }
+
+    public void setSertifikati(List<SertifikatDTO> sertifikati) {
+        this.sertifikati = sertifikati;
+    }
 }

@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.izdavanjestanovaback.com.ServiceResult;
 import rs.ac.bg.fon.izdavanjestanovaback.dto.AgentDTO;
+import rs.ac.bg.fon.izdavanjestanovaback.dto.SertifikatDTO;
 import rs.ac.bg.fon.izdavanjestanovaback.jparepository.AgentRepo;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.AgentMapper;
+import rs.ac.bg.fon.izdavanjestanovaback.mapper.SertifikatMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
+import rs.ac.bg.fon.izdavanjestanovaback.model.Sertifikat;
 /**
  *
  * @author Marko
@@ -24,10 +27,12 @@ public class AgentService {
 
     private final AgentRepo agentRepo;
     private final AgentMapper agentMapper;
+    private final SertifikatMapper sertifikatMapper;
 
-    public AgentService(AgentRepo agentRepo, AgentMapper agentMapper) {
+    public AgentService(AgentRepo agentRepo, AgentMapper agentMapper, SertifikatMapper sertifikatMapper) {
         this.agentRepo = agentRepo;
         this.agentMapper = agentMapper;
+        this.sertifikatMapper  = sertifikatMapper;
     }
 
     public ServiceResult addAgent(AgentDTO dto) {
@@ -83,16 +88,22 @@ public class AgentService {
             if (agent == null) {
                 return ServiceResult.failure("Agent sa datim ID nije pronađen.");
             }
-//            agent.setIme(dto.getIme());
-//            agent.setPrezime(dto.getPrezime());
-//            agent.setBrojLicence(dto.getBrojLicence());
-//            agent.setDatumIstekaLicence(dto.getDatumIstekaLicence());
-//            agent.setKorisnickoIme(dto.getKorisnickoIme());
-//            agent.setSifra(dto.getSifra());
             agentMapper.updateEntityFromDTO(dto, agent);
+            
+            if(dto.getSertifikati() != null){
+                agent.getSertifikatCollection().clear();
+                for (SertifikatDTO sDto : dto.getSertifikati()) {
+                    Sertifikat noviSert = sertifikatMapper.toEntity(sDto);
+                    noviSert.setAgent(agent);
+                    
+                    agent.getSertifikatCollection().add(noviSert);
+                }
+            }
+            
             agentRepo.save(agent);
             return ServiceResult.success("Sistem je izmenio agenta.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ServiceResult.failure("Sistem ne može da izmeni agenta.");
         }
     }

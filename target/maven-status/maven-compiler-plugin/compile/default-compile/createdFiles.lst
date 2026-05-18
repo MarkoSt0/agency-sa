@@ -5,6 +5,7 @@ rs\ac\bg\fon\izdavanjestanovaback\com\ServiceResult.class
 rs\ac\bg\fon\izdavanjestanovaback\service\MestoService.class
 rs\ac\bg\fon\izdavanjestanovaback\model\StavkaIzdavanjaPK.class
 rs\ac\bg\fon\izdavanjestanovaback\dto\MestoDTO.class
+rs\ac\bg\fon\izdavanjestanovaback\mapper\SertifikatMapper.class
 rs\ac\bg\fon\izdavanjestanovaback\model\Sertifikat$SertifikatBuilder.class
 rs\ac\bg\fon\izdavanjestanovaback\controller\MestoController.class
 rs\ac\bg\fon\izdavanjestanovaback\model\Nekretnina.class
@@ -17,6 +18,7 @@ rs\ac\bg\fon\izdavanjestanovaback\mapper\MestoMapper.class
 rs\ac\bg\fon\izdavanjestanovaback\dto\IzdavanjeDTO.class
 rs\ac\bg\fon\izdavanjestanovaback\jparepository\IzdavanjeRepo.class
 rs\ac\bg\fon\izdavanjestanovaback\jparepository\MestoRepo.class
+rs\ac\bg\fon\izdavanjestanovaback\jparepository\SertifikatRepo.class
 rs\ac\bg\fon\izdavanjestanovaback\dto\KlijentDTO.class
 rs\ac\bg\fon\izdavanjestanovaback\jparepository\NekretninaRepo.class
 rs\ac\bg\fon\izdavanjestanovaback\service\TipNekretnineService.class
@@ -25,6 +27,7 @@ rs\ac\bg\fon\izdavanjestanovaback\model\StavkaIzdavanja.class
 rs\ac\bg\fon\izdavanjestanovaback\model\Agent.class
 rs\ac\bg\fon\izdavanjestanovaback\dto\NekretninaDTO.class
 rs\ac\bg\fon\izdavanjestanovaback\jparepository\KlijentRepo.class
+rs\ac\bg\fon\izdavanjestanovaback\dto\SertifikatDTO.class
 rs\ac\bg\fon\izdavanjestanovaback\model\TipNekretnine.class
 rs\ac\bg\fon\izdavanjestanovaback\service\IzdavanjeService.class
 rs\ac\bg\fon\izdavanjestanovaback\service\KlijentService.class
