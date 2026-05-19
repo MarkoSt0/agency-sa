@@ -23,7 +23,7 @@ public class SertifikatMapper {
         return new SertifikatDTO(
                 s.getIdSertifikat(), 
                 s.getNazivSertifikata(), 
-                s.getIzdavaoc(), 
+                s.getIzdavalac(), 
                 s.getDatumSticanja(), 
                 agentId
         );
@@ -35,7 +35,7 @@ public class SertifikatMapper {
         Sertifikat s = new Sertifikat();
         s.setIdSertifikat(dto.getIdSertifikat());
         s.setNazivSertifikata(dto.getNazivSertifikata());
-        s.setIzdavaoc(dto.getIzdavaoc());
+        s.setIzdavalac(dto.getIzdavaoc());
         s.setDatumSticanja(dto.getDatumSticanja());
         // Agent se postavlja na drugom mestu
         return s;
@@ -45,7 +45,7 @@ public class SertifikatMapper {
         if (dto == null || s == null) return;
         s.setIdSertifikat(dto.getIdSertifikat());
         s.setNazivSertifikata(dto.getNazivSertifikata());
-        s.setIzdavaoc(dto.getIzdavaoc());
+        s.setIzdavalac(dto.getIzdavaoc());
         s.setDatumSticanja(dto.getDatumSticanja());
         // Postavlja se agent na drugom mestu
     }

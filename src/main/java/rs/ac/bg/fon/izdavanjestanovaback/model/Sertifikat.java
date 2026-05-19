@@ -15,10 +15,10 @@ import lombok.*;
  */
 @Entity
 @Table(name = "sertifikat")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Data
 public class Sertifikat implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Sertifikat implements Serializable{
     private String nazivSertifikata;
     
     @Column
-    private String izdavaoc;
+    private String izdavalac;
     
     @Temporal(TemporalType.DATE)
     @Column

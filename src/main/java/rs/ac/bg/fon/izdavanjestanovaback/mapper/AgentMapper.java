@@ -27,7 +27,7 @@ public class AgentMapper {
             agent.getIme(),
             agent.getPrezime(),
             agent.getKorisnickoIme(),
-            agent.getSifra(),
+            "",
             null
         );
         if (agent.getSertifikatCollection()!= null) {
