@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -20,6 +21,7 @@ import lombok.Data;
     @NamedQuery(name = "Klijent.findByBrojTelefona", query = "SELECT k FROM Klijent k WHERE k.brojTelefona = :brojTelefona"),
     @NamedQuery(name = "Klijent.findByEmail", query = "SELECT k FROM Klijent k WHERE k.email = :email")})
 @Data
+@NoArgsConstructor
 public class Klijent implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,15 +47,4 @@ public class Klijent implements Serializable {
     @ManyToOne
     private Mesto idMesto;
 
-    public Klijent() {
-    }
-
-    public Klijent(Long id) {
-        this.id = id;
-    }
-
-    public Klijent(Long id, String ime) {
-        this.id = id;
-        this.ime = ime;
-    }
 }
