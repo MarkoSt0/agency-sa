@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- *
+ * Predstavlja domensku klasu za geografsku lokaciju (mesto ili opstinu).
+ * Klasa je mapirana na tabelu "mesto" u bazi podataka.
+ * Koristi se za cuvanje podataka o prebivalistu klijenata.
+ * 
  * @author Marko
  */
 @Entity
@@ -17,34 +21,51 @@ import lombok.Data;
     @NamedQuery(name = "Mesto.findByNazivMesta", query = "SELECT m FROM Mesto m WHERE m.nazivMesta = :nazivMesta"),
     @NamedQuery(name = "Mesto.findByOpstina", query = "SELECT m FROM Mesto m WHERE m.opstina = :opstina")})
 @Data
+@NoArgsConstructor
 public class Mesto implements Serializable {
 
+    /**
+     * Identifikacioni broj za serijalizaciju objekta.
+     */
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * Jedinstveni identifikator mesta u bazi podataka (Primarni kljuc).
+     * Generise se automatski koriscenjem IDENTITY strategije.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
+    
+    /**
+     * Naziv mesta ili grada. Ovo polje je obavezno i ne moze biti null.
+     */
     @Basic(optional = false)
     @Column(name = "nazivMesta")
     private String nazivMesta;
+    
+    /**
+     * Naziv opstine kojoj mesto pripada.
+     */
     @Column(name = "opstina")
     private String opstina;
+    
+    /**
+     * Kolekcija svih klijenata koji su povezani sa ovim mestom.
+     * Predstavlja inverznu stranu veze jedan prema vise, mapiranu preko polja idMesto.
+     */
     @OneToMany(mappedBy = "idMesto")
     private Collection<Klijent> klijentCollection;
 
-    public Mesto() {
-    }
-
-    public Mesto(Long id) {
-        this.id = id;
-    }
-
-    public Mesto(Long id, String nazivMesta) {
-        this.id = id;
-        this.nazivMesta = nazivMesta;
-    }
-
+    /**
+     * Konstruktor sa parametrima za potpuno inicijalizovanje objekta klase Mesto.
+     * 
+     * @param id Jedinstveni identifikator mesta (primarni kljuc).
+     * @param nazivMesta Naziv mesta ili grada.
+     * @param opstina Naziv opstine.
+     */
     public Mesto(Long id, String nazivMesta, String opstina) {
         this.id = id;
         this.nazivMesta = nazivMesta;
