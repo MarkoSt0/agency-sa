@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.izdavanjestanovaback.controller;
 
 import java.util.HashMap;
@@ -17,7 +13,10 @@ import rs.ac.bg.fon.izdavanjestanovaback.dto.AgentDTO;
 import rs.ac.bg.fon.izdavanjestanovaback.service.AgentService;
 
 /**
- *
+ * REST kontroler koji upravlja podacima o agentima i autorizacijom na sistemu.
+ * Predstavlja ulaznu tacku za izvrsavanje operacija autentifikacije i upravljanja nalozima.
+ * Komunikacija se vrsi putem HTTP protokola, a podaci se razmenjuju kroz tela HTTP zahteva i odgovora.
+ * 
  * @author Marko
  */
 @RestController
@@ -25,12 +24,28 @@ import rs.ac.bg.fon.izdavanjestanovaback.service.AgentService;
 @CrossOrigin("http://localhost:9000")
 public class AgentController {
 
+    /**
+     * Servisni sloj zaduzen za poslovnu logiku nad podacima o agentima.
+     */
     private final AgentService agentService;
 
+    /**
+     * Konstruktor koji ubrizgava zavisnost AgentService.
+     * 
+     * @param agentService servis za rad sa agentima nekretnina
+     */
     public AgentController(AgentService agentService) {
         this.agentService = agentService;
     }
 
+    
+    /**
+     * Registruje novog agenta u sistemu.
+     * Vrsi proveru zauzetosti korisnickog imena pre samog unosa.
+     * 
+     * @param dto podaci o novom agentu kojeg treba kreirati
+     * @return ResponseEntity sa objektom ApiResponse koji sadrzi ishod operacije i HTTP status (CREATED, CONFLICT ili BAD_REQUEST)
+     */
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addAgent(@RequestBody AgentDTO dto) {
         ServiceResult result = agentService.addAgent(dto);
@@ -55,17 +70,35 @@ public class AgentController {
                 ));
     }
 
+    /**
+     * Vraca listu svih registrovonih agenata u sistemu.
+     * 
+     * @return ResponseEntity sa listom AgentDTO objekata i HTTP statusom OK
+     */
     @GetMapping("/all")
     public ResponseEntity<List<AgentDTO>> getAllAgenti() {
         return ResponseEntity.ok(agentService.getAllAgenti());
     }
 
+    /**
+     * Pronalazi specificnog agenta na osnovu njegovog jedinstvenog identifikatora.
+     * 
+     * @param id jedinstveni identifikator (ID) agenta
+     * @return ResponseEntity sa pronadjenim AgentDTO objektom i HTTP statusom OK
+     */
     @GetMapping("/{id}")
     public ResponseEntity<AgentDTO> getAgentById(@PathVariable Long id) {
         AgentDTO agentDTO = agentService.getAgentById(id);
         return ResponseEntity.ok(agentDTO);
     }
 
+    /**
+     * Izvrsava sistemsku operaciju: Izmena agenta.
+     * Azurira podatke postojeceg agenta u sistemu.
+     * 
+     * @param dto podaci o agentu sa novim vrednostima koje treba sacuvati
+     * @return ResponseEntity sa objektom ApiResponse koji sadrzi poruku o ishodu i HTTP status (OK ili BAD_REQUEST)
+     */
     @PutMapping("/update")
     public ResponseEntity<ApiResponse> updateAgent(@RequestBody AgentDTO dto) {
         ServiceResult result = agentService.updateAgent(dto);
@@ -77,6 +110,12 @@ public class AgentController {
                 ));
     }
 
+    /**
+     * Uklanja agenta iz sistema na osnovu prosledjenog identifikatora.
+     * 
+     * @param id jedinstveni identifikator (ID) agenta kojeg treba obrisati
+     * @return ResponseEntity sa objektom ApiResponse i HTTP statusom (OK ili BAD_REQUEST)
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteAgent(@PathVariable Long id) {
         ServiceResult result = agentService.deleteAgent(id);
@@ -87,7 +126,15 @@ public class AgentController {
                         status
                 ));
     }
-
+    
+    /**
+     * Izvrsava sistemsku operaciju: Prijava agenta(Login).
+     * Vrsi autentifikaciju korisnika na osnovu korisnickog imena i lozinke.
+     * Ukoliko je prijava uspesna, vraca podatke o ulogovanom agentu.
+     * 
+     * @param loginData mapa koja sadrzi kljuceve "korisnickoIme" i "sifra" sa njihovim vrednostima
+     * @return ResponseEntity sa objektom ApiResponse koji sadrzi podatke o agentu (ako je uspesno) i HTTP statusom (OK ili UNAUTHORIZED)
+     */
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody Map<String, String> loginData) {
         String korisnickoIme = loginData.get("korisnickoIme");
