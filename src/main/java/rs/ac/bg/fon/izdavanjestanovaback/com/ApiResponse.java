@@ -6,12 +6,14 @@ package rs.ac.bg.fon.izdavanjestanovaback.com;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Map;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 /**
  *
  * @author Marko
  */
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse {
 

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.izdavanjestanovaback.service;
 
 
@@ -83,6 +79,10 @@ public class AgentService {
 
     public ServiceResult updateAgent(AgentDTO dto) {
         try {
+            ServiceResult validan = validanAgent(dto);
+            if(validan != null && !validan.isUspesno()){
+                return validan;
+            }
             Agent agent = agentRepo.findById(dto.getId())
                 .orElse(null);
             if (agent == null) {
@@ -109,6 +109,12 @@ public class AgentService {
     }
     
     public ServiceResult login(String korisnickoIme, String sifra) {
+        if (korisnickoIme == null || korisnickoIme.isBlank()) {
+            return ServiceResult.failure("Korisničko ime je obavezno.");
+        }
+        if (sifra == null || sifra.isBlank()) {
+            return ServiceResult.failure("Šifra je obavezna.");
+        }
         try {
             Agent agent = agentRepo.findByKorisnickoImeAndSifra(korisnickoIme, sifra)
                     .orElse(null);
@@ -119,5 +125,27 @@ public class AgentService {
         } catch (Exception e) {
             return ServiceResult.failure("Došlo je do greške prilikom prijave.");
         }
+    }
+
+    private ServiceResult validanAgent(AgentDTO dto) {
+        if (dto == null){
+            return ServiceResult.failure("Nije prosledjen agent");
+        }
+        if (dto.getId() == null) {
+            return ServiceResult.failure("ID agenta je obavezan.");
+        }
+        if (dto.getIme() == null || dto.getIme().isBlank()) {
+            return ServiceResult.failure("Ime agenta je obavezno.");
+        }
+        if (dto.getPrezime() == null || dto.getPrezime().isBlank()) {
+            return ServiceResult.failure("Prezime agenta je obavezno.");
+        }
+        if (dto.getKorisnickoIme() == null || dto.getKorisnickoIme().isBlank()) {
+            return ServiceResult.failure("Korisničko ime je obavezno.");
+        }
+        if (dto.getSifra() == null || dto.getSifra().isBlank()) {
+            return ServiceResult.failure("Šifra je obavezna.");
+        }
+        return null;
     }
 }
