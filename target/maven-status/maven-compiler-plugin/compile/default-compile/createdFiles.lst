@@ -35,7 +35,6 @@ rs\ac\bg\fon\izdavanjestanovaback\mapper\KlijentMapper.class
 rs\ac\bg\fon\izdavanjestanovaback\IzdavanjeStanovaBack.class
 rs\ac\bg\fon\izdavanjestanovaback\dto\StavkaIzdavanjaDTO.class
 rs\ac\bg\fon\izdavanjestanovaback\mapper\IzdavanjeMapper.class
-.netbeans_automatic_build
 rs\ac\bg\fon\izdavanjestanovaback\com\ApiResponseBuilder.class
 rs\ac\bg\fon\izdavanjestanovaback\mapper\NekretninaMapper.class
 rs\ac\bg\fon\izdavanjestanovaback\model\Klijent.class

@@ -126,16 +126,10 @@ public class IzdavanjeService {
         try {
             Optional<Izdavanje> result = izdavanjeRepo.findById(dto.getIdIzdavanje());
             if (result.isEmpty()) {
-                return ServiceResult.failure("Izdavanje nije pronađeno");
+                return ServiceResult.failure("Izdavanje ne postoji");
             }
 
             Izdavanje izdavanje = result.get();
-
-//            izdavanje.setDatumSklapanjaUgovora(dto.getDatumSklapanjaUgovora());
-//            izdavanje.setStatusUgovora(dto.getStatusUgovora());
-//            izdavanje.setNacinPlacanja(dto.getNacinPlacanja());
-//            izdavanje.setUkupanIznos(dto.getUkupanIznos());
-//            izdavanje.setNapomena(dto.getNapomena());
 
             if (dto.getAgent() == null || dto.getAgent().getId() == null) {
             return ServiceResult.failure("Agent mora biti naveden");

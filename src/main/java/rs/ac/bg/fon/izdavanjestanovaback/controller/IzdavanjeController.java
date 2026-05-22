@@ -55,7 +55,7 @@ public class IzdavanjeController {
         ServiceResult result = izdavanjeService.addIzdavanje(dto);
 
         if (!result.isUspesno()) {
-            HttpStatus status = result.getPoruka().toLowerCase().contains("nije pronađen")
+            HttpStatus status = result.getPoruka().toLowerCase().contains("ne postoji")
                     ? HttpStatus.NOT_FOUND
                     : HttpStatus.BAD_REQUEST;
 
@@ -125,7 +125,7 @@ public class IzdavanjeController {
         ServiceResult result = izdavanjeService.updateIzdavanje(dto);
 
         if (!result.isUspesno()) {
-            HttpStatus status = result.getPoruka().toLowerCase().contains("nije pronađen")
+            HttpStatus status = result.getPoruka().toLowerCase().contains("ne postoji")
                     ? HttpStatus.NOT_FOUND
                     : HttpStatus.BAD_REQUEST;
 

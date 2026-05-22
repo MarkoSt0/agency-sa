@@ -16,8 +16,17 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.Izdavanje;
  */
 public interface IzdavanjeRepo extends JpaRepository<Izdavanje, Long>{
 
-    public List<Izdavanje> findByStatusUgovoraContaining(String status);
-    public List<Izdavanje> findByIdKlijent_ImeContainingAndIdKlijent_PrezimeContaining(String ime, String prezime);
+//    public List<Izdavanje> findByStatusUgovoraContaining(String status);
+//    public List<Izdavanje> findByIdKlijent_ImeContainingAndIdKlijent_PrezimeContaining(String ime, String prezime);
+    
+    @Query("SELECT i FROM Izdavanje i WHERE i.statusUgovora LIKE %:status%")
+    List<Izdavanje> findByStatusUgovoraContaining(@Param("status") String status);
+    
+    @Query("SELECT i FROM Izdavanje i WHERE i.idKlijent.ime LIKE %:ime% AND i.idKlijent.prezime LIKE %:prezime%")
+    List<Izdavanje> findByIdKlijent_ImeContainingAndIdKlijent_PrezimeContaining(
+        @Param("ime") String ime, 
+        @Param("prezime") String prezime
+    );
     
     @Query("SELECT i FROM Izdavanje i WHERE i.statusUgovora = :status")
     List<Izdavanje> findByStatusUgovora(@Param("status") String status);
