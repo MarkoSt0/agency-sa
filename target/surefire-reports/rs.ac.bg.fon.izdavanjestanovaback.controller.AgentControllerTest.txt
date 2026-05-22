@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: rs.ac.bg.fon.izdavanjestanovaback.controller.AgentControllerTest
 -------------------------------------------------------------------------------
-Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.52 s -- in rs.ac.bg.fon.izdavanjestanovaback.controller.AgentControllerTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.831 s -- in rs.ac.bg.fon.izdavanjestanovaback.controller.AgentControllerTest

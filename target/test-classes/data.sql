@@ -17,6 +17,8 @@ INSERT INTO klijent (id, ime, prezime, starost, brojTelefona, email, idMesto)
     VALUES (2, 'Ana', 'Nikolic', 28, '0621234567', 'ana@gmail.com', 1);
 INSERT INTO klijent (id, ime, prezime, starost, brojTelefona, email, idMesto)
     VALUES (3, 'Stefan', 'Petrovic', 40, '0631234567', 'stefan@gmail.com', 3);
+INSERT INTO klijent (id, ime, prezime, starost, brojTelefona, email, idMesto)
+    VALUES (10, 'Novi', 'Klijent', 25, '0699999999', 'novi@gmail.com', 1);
 
 
 INSERT INTO nekretnina (idNekretnina, adresa, povrsina, sprat, brojSoba, godinaIzgradnje, statusNekretnine, tipGrejanja, opis, idTipaNekretnine)
