@@ -4,7 +4,13 @@
  */
 package rs.ac.bg.fon.izdavanjestanovaback.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +35,7 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Klijent;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Nekretnina;
 import rs.ac.bg.fon.izdavanjestanovaback.model.StavkaIzdavanja;
+import java.lang.reflect.Type;
 
 /**
  *
@@ -38,6 +45,12 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.StavkaIzdavanja;
 @Service
 @Transactional
 public class IzdavanjeService {
+    
+    private static final String LOG_PATH = "izdavanja-log.json";
+    private final Gson gson = new GsonBuilder()
+        .setPrettyPrinting()
+        .serializeNulls()
+        .create();
 
     private final IzdavanjeRepo izdavanjeRepo;
     private final AgentRepo agentRepo;
@@ -115,6 +128,7 @@ public class IzdavanjeService {
             }
             
             izdavanjeRepo.save(izdavanje);
+            zapisiULog(izdavanjeMapper.toDTO(izdavanje));
             return ServiceResult.success("Izdavanje je uspešno sačuvano");
         } catch (Exception e) {
             e.printStackTrace();
@@ -226,6 +240,26 @@ public class IzdavanjeService {
                 izdavanjeRepo.save(izdavanje);
                 System.out.println("Izdavanje " + izdavanje.getIdIzdavanje() + " je automatski završeno");
             }
+        }
+    }
+    
+    private void zapisiULog(IzdavanjeDTO dto) {
+        try {
+            Path putanja = Path.of(LOG_PATH);
+            List<IzdavanjeDTO> postojecaIzdavanja = new ArrayList<>();
+
+            if (Files.exists(putanja)) {
+                String sadrzaj = Files.readString(putanja);
+                Type listaTip = new TypeToken<List<IzdavanjeDTO>>() {}.getType();
+                postojecaIzdavanja = gson.fromJson(sadrzaj, listaTip);
+            }
+
+            postojecaIzdavanja.add(dto);
+
+            Files.writeString(putanja, gson.toJson(postojecaIzdavanja));
+
+        } catch (IOException e) {
+            System.err.println("Greska pri upisu u log fajl: " + e.getMessage());
         }
     }
 }
