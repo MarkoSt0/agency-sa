@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: rs.ac.bg.fon.izdavanjestanovaback.controller.IzdavanjeControllerTest
--------------------------------------------------------------------------------
-Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.732 s -- in rs.ac.bg.fon.izdavanjestanovaback.controller.IzdavanjeControllerTest

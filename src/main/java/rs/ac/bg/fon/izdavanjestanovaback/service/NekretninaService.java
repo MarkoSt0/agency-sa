@@ -136,6 +136,6 @@ public class NekretninaService {
         if (opt.isEmpty()) {
             return ServiceResult.failure("Nekretnina sa ID " + id + " nije pronađena");
         }
-        return ServiceResult.success("Nekretnina pronađena", opt.get());
+        return ServiceResult.success("Nekretnina pronađena", nekretninaMapper.toDTO(opt.get()));
     }
 }
