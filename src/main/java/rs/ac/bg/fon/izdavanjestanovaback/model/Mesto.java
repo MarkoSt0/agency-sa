@@ -1,6 +1,5 @@
 package rs.ac.bg.fon.izdavanjestanovaback.model;
 
-import com.google.gson.annotations.Since;
 import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;

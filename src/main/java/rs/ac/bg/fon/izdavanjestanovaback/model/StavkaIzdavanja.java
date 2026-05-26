@@ -3,6 +3,10 @@ package rs.ac.bg.fon.izdavanjestanovaback.model;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,8 +41,12 @@ public class StavkaIzdavanja implements Serializable {
     /**
      * Redni broj stavke unutar jednog izdavanja. 
      * Predstavlja deo slozenog primarnog kljuca i obavezno je polje.
+     * Polje je obavezno i mora biti navedeno.
+     * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Id
+    @Size(max = 20, message = "Redni broj stavke izdavanja ne sme biti duži od 20 karaktera.")
+    @NotNull(message = "Redni broj stavke izdavanja je obavezana.")
     @Basic(optional = false)
     @Column(name = "rb")
     private Long rb;
@@ -46,7 +54,12 @@ public class StavkaIzdavanja implements Serializable {
     /**
      * Datum kada zvanicno zapocinje period izdavanja nekretnine definisan ovom stavkom.
      * U bazi podataka se cuva iskljucivo kao cist datum.
+     * Polje je obavezno i mora biti danasnji datum ili datum u buducnosti.
+     * Nije dozvoljeno unositi datume koji su u proslosti.
      */
+    @NotNull(message = "Datum pocetka izdavanja je obavezan.")
+    @FutureOrPresent(message = "Datum pocetka izdavanja mora biti danasnji datum ili "
+            + "datum u buducnosti.")
     @Column(name = "datumPocetkaIzdavanja")
     @Temporal(TemporalType.DATE)
     private Date datumPocetkaIzdavanja;
@@ -54,27 +67,43 @@ public class StavkaIzdavanja implements Serializable {
     /**
      * Datum kada se zavrsava ili istice period izdavanja nekretnine.
      * U bazi podataka se cuva iskljucivo kao cist datum.
+     * Polje je obavezno i mora biti danasnji datum ili datum u buducnosti.
+     * Nije dozvoljeno unositi datume koji su u proslosti.
      */
+    @NotNull(message = "Datum zavrsetka izdavanja je obavezan.")
+    @FutureOrPresent(message = "Datum zavrsetka izdavanja mora biti danasnji datum ili "
+            + "datum u buducnosti.")
     @Column(name = "datumZavrsetkaIzdavanja")
     @Temporal(TemporalType.DATE)
     private Date datumZavrsetkaIzdavanja;
     
     /**
      * Dogovorena cena mesecnog zakupa nekretnine izrazena u novcanoj jedinici.
+     * Polje je obavezno i mora biti navedeno.
+     * Vrednost mesecne kirije ne sme biti negativan broj
      */
+    @NotNull(message = "Mesecna kirija mora biti navedena.")
+    @Min(value = 0, message = "Mesecna kirija ne sme biti negativan broj.")
     @Column(name = "mesecnaKirija")
     private Double mesecnaKirija;
     
     /**
      * Iznos depozita koji je zakupac duzan da polozi kao garanciju pre useljenja.
+     * Polje je obavezno i ne sme biti negativna vrednost.
      */
+    @NotNull(message = "Depozit mora biti naveden.")
+    @Min(value = 0, message = "Depozit ne sme biti negativan broj.")
     @Column(name = "iznosDepozita")
     private Double iznosDepozita;
     
     /**
      * Nadredjeni entitet (Izdavanje) kojem ova stavka pripada.
      * Predstavlja drugi deo slozenog primarnog kljuca (ManyToOne veza).
+     * Polje je obavezno i mora biti navedeno.
+     * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @Size(max = 20, message = "Sifra izdavanja ne sme biti duži od 20 karaktera.")
+    @NotNull(message = "Sifra izdavanja je obavezana.")
     @JoinColumn(name = "idIzdavanje", referencedColumnName = "idIzdavanje")
     @ManyToOne
     @Id
@@ -83,7 +112,11 @@ public class StavkaIzdavanja implements Serializable {
     /**
      * Nekretnina koja se iznajmljuje kroz ovu konkretnu stavku.
      * Predstavlja spoljni kljuc (ManyToOne veza) ka tabeli nekretnina.
+     * Polje je obavezno i mora biti navedeno.
+     * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @Size(max = 20, message = "Sifra nekretnine ne sme biti duži od 20 karaktera.")
+    @NotNull(message = "Sifra nekretnine je obavezana.")
     @JoinColumn(name = "idNekretnina", referencedColumnName = "idNekretnina")
     @ManyToOne
     private Nekretnina idNekretnina;   
