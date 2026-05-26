@@ -1,6 +1,10 @@
 package rs.ac.bg.fon.izdavanjestanovaback.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.*;
@@ -24,30 +28,46 @@ public class Sertifikat implements Serializable{
     /**
      * Jedinstveni identifikator sertifikata u bazi podataka (Primarni kljuc).
      * Generise se automatski na strani baze koriscenjem IDENTITY strategije.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @NotBlank(message = "Identifikacija sertifikata je obavezna.")
+    @Size(max = 20, message = "Identifikacija sertifikata ne moze biti duza od 20 karaktera")
     private Long idSertifikat;
     
     /**
      * Zvanicni naziv sertifikata ili polozene obuke (npr. Sertifikat za posrednika u prometu nekretnina).
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Column
+    @NotBlank(message = "Naziv sertifikata")
+    @Size(max = 255, message = "Naziv sertifikata ne moze biti duzi od 255 karaktera")
     private String nazivSertifikata;
     
     /**
      * Pravno lice, institucija ili organizacija koja je izdala sertifikat (npr. Privredna komora Srbije).
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Column
+    @NotBlank(message = "Naziv sertifikata")
+    @Size(max = 255, message = "Naziv sertifikata ne moze biti duzi od 255 karaktera")
     private String izdavalac;
     
     /**
      * Datum kada je agent zvanicno stekao sertifikat.
      * U bazi se cuva iskljucivo kao cist datum (dan, mesec, godina).
+     * Polje je obavezno i mora biti danasnji datum ili datum u proslosti.
+     * Nije dozvoljeno unositi datume koji su u buducnosti.
      */
     @Temporal(TemporalType.DATE)
     @Column
+    @NotNull(message = "Datum sticanja sertifikata je obavezan.")
+    @PastOrPresent(message = "Datum sticanja sertifikata mora biti danasnji datum ili datum u proslosti.")
     private Date datumSticanja;
     
     /**
