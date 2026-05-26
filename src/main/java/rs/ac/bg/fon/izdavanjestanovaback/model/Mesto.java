@@ -1,8 +1,11 @@
 package rs.ac.bg.fon.izdavanjestanovaback.model;
 
+import com.google.gson.annotations.Since;
 import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,14 +44,21 @@ public class Mesto implements Serializable {
     
     /**
      * Naziv mesta ili grada. Ovo polje je obavezno i ne moze biti null.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @NotBlank(message = "Naziv mesta je obavezan.")
+    @Size(max = 255, message = "Naziv mesta ne sme biti duzi od 255 karaktera.")
     @Basic(optional = false)
     @Column(name = "nazivMesta")
     private String nazivMesta;
     
     /**
      * Naziv opstine kojoj mesto pripada.
+     * Polje je opcionalno moze biti null.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @Size(max = 255, message = "Naziv opštine ne sme biti duži od 255 karaktera.")
     @Column(name = "opstina")
     private String opstina;
     
