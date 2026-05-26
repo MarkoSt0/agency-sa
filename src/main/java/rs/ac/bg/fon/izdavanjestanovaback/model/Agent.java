@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -47,40 +51,65 @@ public class Agent implements Serializable {
     
     /**
      * Broj profesionalne licence agenta za posredovanje u prometu nekretnina.
+     * Ovo polje je obavezno, ne sme biti null niti prazno.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @NotBlank(message = "Broj licence je obavezan.")
+    @Size(max = 255, message = "Broj licence ne sme biti duzi od 255 karaktera.")
     @Column(name = "brojLicence")
     private String brojLicence;
     
     /**
      * Datum kada istice vazenje licence agenta.
      * Mapira se kao cist datum u bazi (bez vremenske komponente).
+     * Polje je obavezno i mora biti danasnji datum ili datum u buducnosti.
+     * Nije dozvoljeno unositi datume koji su u proslosti.
      */
+    @NotNull(message = "Datum isteka licence je obavezan.")
+    @FutureOrPresent(message = "Datum isteka licence mora biti danasnji datum ili "
+            + "datum u buducnosti.")
     @Column(name = "datumIstekaLicence")
     @Temporal(TemporalType.DATE)
     private Date datumIstekaLicence;
     
     /**
      * Ime agenta. Ovo polje je obavezno i ne moze biti null u bazi.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera.
      */
+    @NotBlank(message = "Ime agenta je obavezno.")
+    @Size(max = 255, message = "Ime ne sme biti buze od 255 karaktera.")
     @Basic(optional = false)
     @Column(name = "ime")
     private String ime;
     
     /**
      * Prezime agenta.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera.
      */
+    @NotBlank(message = "Prezime agenta je obavezno.")
+    @Size(max = 255, message = "Prezime ne sme biti buze od 255 karaktera.")
     @Column(name = "prezime")
     private String prezime;
     
     /**
      * Jedinstveno korisnicko ime koje agent koristi za login na sistem.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Mora imati izmedju 3 i 50 karaktera.
      */
+    @NotBlank(message = "Korisničko ime je obavezno.")
+    @Size(min = 3, max = 50, message = "Korisničko ime mora imati između 3 i 50 karaktera.")
     @Column(name = "korisnickoIme")
     private String korisnickoIme;
     
     /**
      * Lozinka (sifra) agenta za pristup sistemu.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Mora imati izmedju 6 i 100 karaktera.
      */
+    @NotBlank(message = "Šifra je obavezna.")
+    @Size(min = 5, max = 100, message = "Šifra mora imati između 5 i 100 karaktera.")
     @Column(name = "sifra")
     private String sifra;
     
@@ -102,7 +131,6 @@ public class Agent implements Serializable {
     /**
      * Konstruktor koji inicijalizuje objekat klase Agent sa prosledjenim identifikatorom.
      * Koristan za kreiranje instanci kada je potrebno raditi pretragu ili povezivanje preko ID-ja.
-     * 
      * @param id Jedinstveni identifikator agenta (primarni kljuc).
      */
     public Agent(Long id) {

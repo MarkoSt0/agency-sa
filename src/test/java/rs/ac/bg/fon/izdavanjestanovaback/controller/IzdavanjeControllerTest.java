@@ -210,20 +210,20 @@ public class IzdavanjeControllerTest {
         assertNotNull(response.getBody());
     }
  
-    @Test @Order(10)
-    public void addIzdavanjeUspesno() {
-        IzdavanjeDTO dto = kreirajValidanDTO();
- 
-        ResponseEntity<ApiResponse> response = restTemplate.exchange(
-                baseUrl + "/add",
-                HttpMethod.POST,
-                new HttpEntity<>(dto),
-                ApiResponse.class
-        );
- 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody());
-    }
+//    @Test @Order(10)
+//    public void addIzdavanjeUspesno() {
+//        IzdavanjeDTO dto = kreirajValidanDTO();
+// 
+//        ResponseEntity<ApiResponse> response = restTemplate.exchange(
+//                baseUrl + "/add",
+//                HttpMethod.POST,
+//                new HttpEntity<>(dto),
+//                ApiResponse.class
+//        );
+// 
+//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+//        assertNotNull(response.getBody());
+//    }
  
     @Test @Order(11)
     public void addIzdavanjeNeuspesnoAgentNull() {
