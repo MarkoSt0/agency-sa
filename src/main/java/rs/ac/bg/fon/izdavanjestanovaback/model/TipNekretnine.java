@@ -3,6 +3,8 @@ package rs.ac.bg.fon.izdavanjestanovaback.model;
 import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,8 +43,11 @@ public class TipNekretnine implements Serializable {
 
     /**
      * Naziv tipa nekretnine (npr. Stan, Kuca, Garaza). 
-     * Ovo polje je obavezno i ne moze biti null u bazi podataka.
+     * Ovo polje je obavezno i ne moze biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @NotBlank(message = "Naziv tipa nekretnine je obavezan.")
+    @Size(max = 255, message = "Naziv tipa nekretnine ne sme biti duzi od 255 karaktera.")
     @Basic(optional = false)
     @Column(name = "nazivTipaNekretnine")
     private String nazivTipaNekretnine;
