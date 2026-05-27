@@ -3,11 +3,9 @@ package rs.ac.bg.fon.izdavanjestanovaback.model;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
