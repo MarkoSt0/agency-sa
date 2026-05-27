@@ -2,8 +2,12 @@ package rs.ac.bg.fon.izdavanjestanovaback.service;
 
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.izdavanjestanovaback.com.ServiceResult;
 import rs.ac.bg.fon.izdavanjestanovaback.dto.AgentDTO;
@@ -12,6 +16,7 @@ import rs.ac.bg.fon.izdavanjestanovaback.jparepository.AgentRepo;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.AgentMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.SertifikatMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
+import rs.ac.bg.fon.izdavanjestanovaback.model.Klijent;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Sertifikat;
 /**
  *
@@ -19,17 +24,13 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.Sertifikat;
  */
 @Service
 @Transactional
+@AllArgsConstructor
 public class AgentService {
 
     private final AgentRepo agentRepo;
     private final AgentMapper agentMapper;
     private final SertifikatMapper sertifikatMapper;
-
-    public AgentService(AgentRepo agentRepo, AgentMapper agentMapper, SertifikatMapper sertifikatMapper) {
-        this.agentRepo = agentRepo;
-        this.agentMapper = agentMapper;
-        this.sertifikatMapper  = sertifikatMapper;
-    }
+    private final Validator validator;
 
     public ServiceResult addAgent(AgentDTO dto) {
         try {
@@ -78,11 +79,13 @@ public class AgentService {
     }
 
     public ServiceResult updateAgent(AgentDTO dto) {
+        if (dto == null) {
+            return ServiceResult.failure("Nije prosledjen agent.");
+        }
+        if (dto.getId() == null) {
+            return ServiceResult.failure("ID agenta je obavezan za izmenu.");
+        }
         try {
-            ServiceResult validan = validanAgent(dto);
-            if(validan != null && !validan.isUspesno()){
-                return validan;
-            }
             Agent agent = agentRepo.findById(dto.getId())
                 .orElse(null);
             if (agent == null) {
@@ -99,6 +102,15 @@ public class AgentService {
                     agent.getSertifikatCollection().add(noviSert);
                 }
             }
+            
+            //Nova validacija
+                Set<ConstraintViolation<Agent>> violations = validator.validate(agent);
+                if (!violations.isEmpty()) {
+                    String poruke = violations.stream()
+                            .map(ConstraintViolation::getMessage)
+                            .collect(Collectors.joining(", "));
+                    return ServiceResult.failure(poruke);
+                }
             
             agentRepo.save(agent);
             return ServiceResult.success("Sistem je izmenio agenta.");
@@ -125,27 +137,5 @@ public class AgentService {
         } catch (Exception e) {
             return ServiceResult.failure("Došlo je do greške prilikom prijave.");
         }
-    }
-
-    private ServiceResult validanAgent(AgentDTO dto) {
-        if (dto == null){
-            return ServiceResult.failure("Nije prosledjen agent");
-        }
-        if (dto.getId() == null) {
-            return ServiceResult.failure("ID agenta je obavezan.");
-        }
-        if (dto.getIme() == null || dto.getIme().isBlank()) {
-            return ServiceResult.failure("Ime agenta je obavezno.");
-        }
-        if (dto.getPrezime() == null || dto.getPrezime().isBlank()) {
-            return ServiceResult.failure("Prezime agenta je obavezno.");
-        }
-        if (dto.getKorisnickoIme() == null || dto.getKorisnickoIme().isBlank()) {
-            return ServiceResult.failure("Korisničko ime je obavezno.");
-        }
-        if (dto.getSifra() == null || dto.getSifra().isBlank()) {
-            return ServiceResult.failure("Šifra je obavezna.");
-        }
-        return null;
     }
 }
