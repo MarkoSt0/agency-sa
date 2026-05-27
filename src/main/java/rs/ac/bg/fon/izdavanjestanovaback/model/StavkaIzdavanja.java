@@ -3,6 +3,7 @@ package rs.ac.bg.fon.izdavanjestanovaback.model;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -45,8 +46,7 @@ public class StavkaIzdavanja implements Serializable {
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Id
-    @Size(max = 20, message = "Redni broj stavke izdavanja ne sme biti duži od 20 karaktera.")
-    @NotNull(message = "Redni broj stavke izdavanja je obavezana.")
+    @NotNull(message = "Redni broj stavke izdavanja je obavezan.")
     @Basic(optional = false)
     @Column(name = "rb")
     private Long rb;
@@ -102,8 +102,8 @@ public class StavkaIzdavanja implements Serializable {
      * Polje je obavezno i mora biti navedeno.
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
-    @Size(max = 20, message = "Sifra izdavanja ne sme biti duži od 20 karaktera.")
-    @NotNull(message = "Sifra izdavanja je obavezana.")
+    @NotNull(message = "Izdavanje mora biti navedeno.")
+//    @Digits(integer = 20, fraction = 0, message = "Identifikacija izdavanja moze imati do 20 cifara.")    
     @JoinColumn(name = "idIzdavanje", referencedColumnName = "idIzdavanje")
     @ManyToOne
     @Id
@@ -115,8 +115,8 @@ public class StavkaIzdavanja implements Serializable {
      * Polje je obavezno i mora biti navedeno.
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
-    @Size(max = 20, message = "Sifra nekretnine ne sme biti duži od 20 karaktera.")
-    @NotNull(message = "Sifra nekretnine je obavezana.")
+    @NotNull(message = "Nekretnina mora biti navedena.")
+//    @Digits(integer = 20, fraction = 0, message = "Identifikacija nekretnine moze imati do 20 cifara.")    
     @JoinColumn(name = "idNekretnina", referencedColumnName = "idNekretnina")
     @ManyToOne
     private Nekretnina idNekretnina;   

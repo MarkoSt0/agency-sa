@@ -53,7 +53,7 @@ public class KlijentControllerTest {
         KlijentDTO dto = new KlijentDTO();
         dto.setIme("Zika");
         dto.setPrezime("Zivkovic");
-        dto.setStarost(30);
+        dto.setStarost(151);
         dto.setBrojTelefona("0641234567");
         dto.setEmail("zika@gmail.com");
         dto.setMesto(mesto);
@@ -177,6 +177,10 @@ public class KlijentControllerTest {
                 new HttpEntity<>(dto),
                 ApiResponse.class
         );
+        
+        String vracenaPoruka = response.getBody().getPoruka();
+        
+        System.out.println(vracenaPoruka);
  
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());

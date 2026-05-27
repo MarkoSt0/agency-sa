@@ -3,7 +3,6 @@ package rs.ac.bg.fon.izdavanjestanovaback.model;
 import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -48,7 +47,6 @@ public class Klijent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    @Digits(integer = 20, fraction = 0)
     private Long id;
     
     /**
@@ -120,8 +118,7 @@ public class Klijent implements Serializable {
      */
     @JoinColumn(name = "idMesto", referencedColumnName = "id")
     @ManyToOne
-    @NotNull(message = "Polje idMesto je obavezno.")
-    @Digits(integer = 20, fraction = 0, message = "idMesto moze imati do 20 cifara.")
+    @NotNull(message = "Mesto mora biti izabrano.")
     private Mesto idMesto;
 
 }

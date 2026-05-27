@@ -28,14 +28,11 @@ public class Sertifikat implements Serializable{
     /**
      * Jedinstveni identifikator sertifikata u bazi podataka (Primarni kljuc).
      * Generise se automatski na strani baze koriscenjem IDENTITY strategije.
-     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @NotBlank(message = "Identifikacija sertifikata je obavezna.")
-    @Size(max = 20, message = "Identifikacija sertifikata ne moze biti duza od 20 karaktera")
     private Long idSertifikat;
     
     /**
@@ -44,7 +41,7 @@ public class Sertifikat implements Serializable{
      * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Column
-    @NotBlank(message = "Naziv sertifikata")
+    @NotBlank(message = "Naziv sertifikata je obavezan")
     @Size(max = 255, message = "Naziv sertifikata ne moze biti duzi od 255 karaktera")
     private String nazivSertifikata;
     
@@ -54,8 +51,8 @@ public class Sertifikat implements Serializable{
      * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
     @Column
-    @NotBlank(message = "Naziv sertifikata")
-    @Size(max = 255, message = "Naziv sertifikata ne moze biti duzi od 255 karaktera")
+    @NotBlank(message = "Naziv izdavaoca je obavezan.")
+    @Size(max = 255, message = "Naziv izdavaoca ne moze biti duzi od 255 karaktera")
     private String izdavalac;
     
     /**
@@ -74,8 +71,10 @@ public class Sertifikat implements Serializable{
      * Agent koji poseduje ovaj konkretni sertifikat.
      * Predstavlja spoljni kljuc (ManyTOOne veza) ka tabeli agent.
      * Podaci o agentu se ucitavaju odmah (EAGER) zajedno sa sertifikatom.
+     * Agent(vlasnik sertifikata) mora postojati.
      */
     @JoinColumn(name = "idAgent", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull(message = "Sertifikat mora biti povezan sa agentom.")
     private Agent agent; 
 }

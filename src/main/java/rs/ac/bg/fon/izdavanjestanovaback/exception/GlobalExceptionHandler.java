@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.izdavanjestanovaback.exception;
 
 import javax.persistence.EntityNotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,4 +52,5 @@ public class GlobalExceptionHandler {
                         HttpStatus.BAD_REQUEST
                 ));
     }
+    
 }

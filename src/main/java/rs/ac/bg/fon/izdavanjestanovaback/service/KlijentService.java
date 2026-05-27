@@ -5,8 +5,11 @@
 package rs.ac.bg.fon.izdavanjestanovaback.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -29,11 +32,14 @@ public class KlijentService {
     private final KlijentRepo klijentRepo;
     private final MestoRepo mestoRepo;
     private final KlijentMapper klijentMapper;
+    private final Validator validator;
 
-    public KlijentService(KlijentRepo klijentRepo, MestoRepo mestoRepo, KlijentMapper klijentMapper) {
+    public KlijentService(KlijentRepo klijentRepo, MestoRepo mestoRepo,
+                          KlijentMapper klijentMapper, Validator validator) {
         this.klijentRepo = klijentRepo;
         this.mestoRepo = mestoRepo;
         this.klijentMapper = klijentMapper;
+        this.validator = validator;
     }
     
     public ServiceResult addKlijent(KlijentDTO dto) {
@@ -43,6 +49,16 @@ public class KlijentService {
             }else{
                 Klijent k = klijentMapper.toEntity(dto);
                 mestoRepo.findById(dto.getMesto().getId()).ifPresent(k::setIdMesto);
+                
+                //Nova validacija
+                Set<ConstraintViolation<Klijent>> violations = validator.validate(k);
+                if (!violations.isEmpty()) {
+                    String poruke = violations.stream()
+                            .map(ConstraintViolation::getMessage)
+                            .collect(Collectors.joining(", "));
+                    return ServiceResult.failure(poruke);
+                }
+            
                 klijentRepo.save(k);
                 return ServiceResult.success("Sistem je sacuvao korisnika");
             }
