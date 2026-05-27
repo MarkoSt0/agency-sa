@@ -3,6 +3,13 @@ package rs.ac.bg.fon.izdavanjestanovaback.model;
 import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,42 +42,69 @@ public class Klijent implements Serializable {
     /**
      * Jedinstveni identifikator klijenta u bazi podataka (Primarni kljuc).
      * Generise se automatski koriscenjem IDENTITY strategije.
+     * Vrednost ne sme biti null, a maksimalna vrednost odgovara BIGINT(20) koloni u bazi.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @Digits(integer = 20, fraction = 0)
     private Long id;
     
     /**
      * Ime klijenta. Polje je obavezno i ne moze imati null vrednost u bazi.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @NotBlank(message = "Ime klijenta je obavezno.")
+    @Size(max = 255, message = "Ime ne sme biti duže od 255 karaktera.")
     @Basic(optional = false)
     @Column(name = "ime")
     private String ime;
     
     /**
      * Prezime klijenta.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @NotBlank(message = "Prezime klijenta je obavezno.")
+    @Size(max = 255, message = "Prezime ne sme biti duže od 255 karaktera.")
     @Column(name = "prezime")
     private String prezime;
     
     /**
      * Starost (broj godina) klijenta.
+     * Polje je obavezno i ne sme biti null.
+     * Vrednost mora biti pozitivan broj koji odgovara INT(11) koloni u bazi.
+     * Opseg za broj godina je od 18 do 150 godina.
      */
+    @NotNull(message = "Starost klijenta je obavezna.")
+    @Min(value = 1, message = "Starost mora biti veća od 0.")
+    @Max(value = 150, message = "Starost ne sme biti veća od 150.")
     @Column(name = "starost")
     private Integer starost;
     
     /**
      * Kontakt telefon klijenta. Moze biti u bilo kom obliku.
+     * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @NotBlank(message = "Broj telefona je obavezan.")
+    @Size(max = 255, message = "Broj telefona ne sme biti duži od 255 karaktera.")
     @Column(name = "brojTelefona")
     private String brojTelefona;
     
     /**
      * Elektronska posta (email) klijenta za slanje obavestenja i ugovora.
+     * Polje je obavezno, ne sme biti null niti sadrzati samo razmake,
+     * i mora biti u ispravnom formatu email adrese.
+     * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
+     * Email mora biti jedinstven u sistemu, duplikati nisu dozvoljeni.
      */
     @Column(name = "email")
+    @NotBlank(message = "Email je obavezan.")
+    @Email(message = "Email mora biti u ispravnom formatu.")
+    @Size(max = 255, message = "Email ne sme biti duzi od 255 karaktera.")
     private String email;
     
     /**
@@ -86,6 +120,8 @@ public class Klijent implements Serializable {
      */
     @JoinColumn(name = "idMesto", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Polje idMesto je obavezno.")
+    @Digits(integer = 20, fraction = 0, message = "idMesto moze imati do 20 cifara.")
     private Mesto idMesto;
 
 }
