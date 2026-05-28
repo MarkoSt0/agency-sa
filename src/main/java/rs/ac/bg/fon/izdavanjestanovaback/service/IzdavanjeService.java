@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +38,8 @@ import rs.ac.bg.fon.izdavanjestanovaback.model.Klijent;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Nekretnina;
 import rs.ac.bg.fon.izdavanjestanovaback.model.StavkaIzdavanja;
 import java.lang.reflect.Type;
+import java.util.Set;
+import lombok.AllArgsConstructor;
 
 /**
  *
@@ -44,13 +48,15 @@ import java.lang.reflect.Type;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class IzdavanjeService {
     
     private static final String LOG_PATH = "izdavanja-log.json";
     private final Gson gson = new GsonBuilder()
-        .setPrettyPrinting()
-        .serializeNulls()
-        .create();
+            .setPrettyPrinting()
+            .serializeNulls()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            .create();
 
     private final IzdavanjeRepo izdavanjeRepo;
     private final AgentRepo agentRepo;
@@ -59,25 +65,7 @@ public class IzdavanjeService {
     private final IzdavanjeMapper izdavanjeMapper;
     private final KlijentMapper klijentMapper;
     private final StavkaIzdavanjaMapper stavkaMapper;
-    
-
-    public IzdavanjeService(
-        IzdavanjeRepo izdavanjeRepo,
-        NekretninaRepo nekretninaRepo,
-        AgentRepo agentRepo,
-        KlijentRepo klijentRepo,
-        IzdavanjeMapper izdavanjeMapper,
-        KlijentMapper klijentMapper,
-        @Lazy StavkaIzdavanjaMapper stavkaMapper
-    ) {
-        this.klijentRepo = klijentRepo;
-        this.agentRepo = agentRepo;
-        this.nekretninaRepo = nekretninaRepo;
-        this.izdavanjeRepo = izdavanjeRepo;
-        this.izdavanjeMapper = izdavanjeMapper;
-        this.klijentMapper = klijentMapper;
-        this.stavkaMapper = stavkaMapper;
-    }
+    private final Validator validator;
 
     // Pretraga svih izdanja (ucitava i stavke)
     public List<IzdavanjeDTO> getAllIzdavanja() {
@@ -125,6 +113,15 @@ public class IzdavanjeService {
                                 stavka.setIdIzdavanje(izdavanje);
                                 stavka.setRb(rbCounter++);
                 }       
+            }
+            
+            //Nova validacija
+            Set<ConstraintViolation<Izdavanje>> violations = validator.validate(izdavanje);
+            if (!violations.isEmpty()) {
+                String poruke = violations.stream()
+                        .map(ConstraintViolation::getMessage)
+                        .collect(Collectors.joining(", "));
+                return ServiceResult.failure(poruke);
             }
             
             izdavanjeRepo.save(izdavanje);
@@ -180,6 +177,16 @@ public class IzdavanjeService {
                 izdavanje.getStavkaIzdavanjaCollection().addAll(noveStavke);
                 
             }
+            
+            //Nova validacija
+            Set<ConstraintViolation<Izdavanje>> violations = validator.validate(izdavanje);
+            if (!violations.isEmpty()) {
+                String poruke = violations.stream()
+                        .map(ConstraintViolation::getMessage)
+                        .collect(Collectors.joining(", "));
+                return ServiceResult.failure(poruke);
+            }
+            
             izdavanjeRepo.save(izdavanje);
             return ServiceResult.success("Izdavanje je uspešno izmenjeno");
 

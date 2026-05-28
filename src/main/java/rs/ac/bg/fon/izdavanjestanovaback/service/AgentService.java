@@ -16,7 +16,6 @@ import rs.ac.bg.fon.izdavanjestanovaback.jparepository.AgentRepo;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.AgentMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.SertifikatMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
-import rs.ac.bg.fon.izdavanjestanovaback.model.Klijent;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Sertifikat;
 /**
  *
@@ -104,13 +103,13 @@ public class AgentService {
             }
             
             //Nova validacija
-                Set<ConstraintViolation<Agent>> violations = validator.validate(agent);
-                if (!violations.isEmpty()) {
-                    String poruke = violations.stream()
-                            .map(ConstraintViolation::getMessage)
-                            .collect(Collectors.joining(", "));
-                    return ServiceResult.failure(poruke);
-                }
+            Set<ConstraintViolation<Agent>> violations = validator.validate(agent);
+            if (!violations.isEmpty()) {
+                String poruke = violations.stream()
+                        .map(ConstraintViolation::getMessage)
+                        .collect(Collectors.joining(", "));
+                return ServiceResult.failure(poruke);
+            }
             
             agentRepo.save(agent);
             return ServiceResult.success("Sistem je izmenio agenta.");
