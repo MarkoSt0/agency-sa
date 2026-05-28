@@ -6,17 +6,22 @@ package rs.ac.bg.fon.izdavanjestanovaback.service;
 
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import rs.ac.bg.fon.izdavanjestanovaback.dto.NekretninaDTO;
 import rs.ac.bg.fon.izdavanjestanovaback.mapper.NekretninaMapper;
 import rs.ac.bg.fon.izdavanjestanovaback.model.Nekretnina;
 import rs.ac.bg.fon.izdavanjestanovaback.model.TipNekretnine;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.izdavanjestanovaback.com.ServiceResult;
 import rs.ac.bg.fon.izdavanjestanovaback.jparepository.NekretninaRepo;
 import rs.ac.bg.fon.izdavanjestanovaback.jparepository.TipNekretnineRepo;
+import rs.ac.bg.fon.izdavanjestanovaback.model.Agent;
 
 /**
  *
@@ -24,19 +29,13 @@ import rs.ac.bg.fon.izdavanjestanovaback.jparepository.TipNekretnineRepo;
  */
 @Service
 @Transactional
+@AllArgsConstructor
 public class NekretninaService {
 
     private final NekretninaRepo nekretninaRepo;
     private final TipNekretnineRepo tipNekretnineRepo;
     private final NekretninaMapper nekretninaMapper;
-
-    public NekretninaService(NekretninaRepo nekretninaRepo,
-                             NekretninaMapper nekretninaMapper,
-                             TipNekretnineRepo tipNekretnineRepo) {
-        this.nekretninaRepo = nekretninaRepo;
-        this.nekretninaMapper = nekretninaMapper;
-        this.tipNekretnineRepo = tipNekretnineRepo;
-    }
+    private final Validator validator;
 
     public ServiceResult addNekretnina(NekretninaDTO dto) {
         try {
@@ -51,6 +50,14 @@ public class NekretninaService {
                     return ServiceResult.failure("Tip nekretnine sa ID " + dto.getTipNekretnine().getIdTipaNekretnine() + " nije pronađen");
                 }
                 nekretnina.setTipNekretnine(tip.get());
+            }
+            //Nova validacija
+            Set<ConstraintViolation<Nekretnina>> violations = validator.validate(nekretnina);
+            if (!violations.isEmpty()) {
+                String poruke = violations.stream()
+                        .map(ConstraintViolation::getMessage)
+                        .collect(Collectors.joining(", "));
+                return ServiceResult.failure(poruke);
             }
             nekretninaRepo.save(nekretnina);
             return ServiceResult.success("Sistem je sačuvao nekretninu.");
@@ -68,15 +75,6 @@ public class NekretninaService {
                 return ServiceResult.failure("Nekretnina nije pronađena");
             }
             Nekretnina n = result.get();
-            
-//            n.setAdresa(dto.getAdresa());
-//            n.setPovrsina(dto.getPovrsina());
-//            n.setSprat(dto.getSprat());
-//            n.setBrojSoba(dto.getBrojSoba());
-//            n.setGodinaIzgradnje(dto.getGodinaIzgradnje());
-//            n.setOpis(dto.getOpis());
-//            n.setTipGrejanja(dto.getTipGrejanja());
-//            n.setStatusNekretnine(dto.getStatusNekretnine());
 
             if (dto.getTipNekretnine() != null) {
                 if (dto.getTipNekretnine().getIdTipaNekretnine() == null) {
@@ -91,6 +89,15 @@ public class NekretninaService {
             
             nekretninaMapper.updateEntityFromDTO(dto, n);
 
+            //Nova validacija
+            Set<ConstraintViolation<Nekretnina>> violations = validator.validate(n);
+            if (!violations.isEmpty()) {
+                String poruke = violations.stream()
+                        .map(ConstraintViolation::getMessage)
+                        .collect(Collectors.joining(", "));
+                return ServiceResult.failure(poruke);
+            }
+            
             nekretninaRepo.save(n);
             return ServiceResult.success("Nekretnina je uspešno izmenjena");
         } catch (Exception e) {
@@ -103,7 +110,7 @@ public class NekretninaService {
         try {
             Optional<Nekretnina> opt = nekretninaRepo.findById(id);
             if (opt.isEmpty()) {
-                return ServiceResult.failure("Nekretnina sa ID " + id + " nije pronađena");
+                return ServiceResult.failure("Nekretnina sa ID " + id + " nije pronadjena");
             }
             nekretninaRepo.delete(opt.get());
             return ServiceResult.success("Nekretnina je uspešno obrisana");
@@ -134,7 +141,7 @@ public class NekretninaService {
     public ServiceResult getNekretninaById(Long id) {
         Optional<Nekretnina> opt = nekretninaRepo.findById(id);
         if (opt.isEmpty()) {
-            return ServiceResult.failure("Nekretnina sa ID " + id + " nije pronađena");
+            return ServiceResult.failure("Nekretnina sa ID " + id + " nije pronadjena");
         }
         return ServiceResult.success("Nekretnina pronađena", nekretninaMapper.toDTO(opt.get()));
     }
