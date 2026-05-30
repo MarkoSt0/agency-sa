@@ -7,7 +7,9 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.pl.REGON;
 
 /**
  * Predstavlja domensku klasu koja modeluje pojedinacnu stavku unutar ugovora ili realizacije izdavanja.
@@ -30,6 +32,7 @@ import lombok.NoArgsConstructor;
     @NamedQuery(name = "StavkaIzdavanja.findByMesecnaKirija", query = "SELECT s FROM StavkaIzdavanja s WHERE s.mesecnaKirija = :mesecnaKirija"),
     @NamedQuery(name = "StavkaIzdavanja.findByIznosDepozita", query = "SELECT s FROM StavkaIzdavanja s WHERE s.iznosDepozita = :iznosDepozita")})
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StavkaIzdavanja implements Serializable {
 
     /**
@@ -43,6 +46,7 @@ public class StavkaIzdavanja implements Serializable {
      * Polje je obavezno i mora biti navedeno.
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @Id
     @NotNull(message = "Redni broj stavke izdavanja je obavezan.")
     @Basic(optional = false)
@@ -100,6 +104,7 @@ public class StavkaIzdavanja implements Serializable {
      * Polje je obavezno i mora biti navedeno.
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @NotNull(message = "Izdavanje mora biti navedeno.")
 //    @Digits(integer = 20, fraction = 0, message = "Identifikacija izdavanja moze imati do 20 cifara.")    
     @JoinColumn(name = "idIzdavanje", referencedColumnName = "idIzdavanje")
