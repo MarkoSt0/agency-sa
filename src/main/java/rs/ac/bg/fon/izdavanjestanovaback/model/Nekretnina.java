@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import rs.ac.bg.fon.izdavanjestanovaback.enums.StatusNekretnine;
 import rs.ac.bg.fon.izdavanjestanovaback.enums.TipGrejanja;
@@ -33,6 +34,7 @@ import rs.ac.bg.fon.izdavanjestanovaback.enums.TipGrejanja;
     @NamedQuery(name = "Nekretnina.findByOpis", query = "SELECT n FROM Nekretnina n WHERE n.opis = :opis")})
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Nekretnina implements Serializable {
 
     /**
@@ -44,6 +46,7 @@ public class Nekretnina implements Serializable {
      * Jedinstveni identifikator nekretnine u bazi podataka (Primarni kljuc).
      * Generise se automatski koriscenjem IDENTITY strategije.
      */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -55,6 +58,7 @@ public class Nekretnina implements Serializable {
      * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @NotBlank(message = "Adresa nekretnine je obavezna.")
     @Size(max = 255, message = "Adresa ne sme biti duza od 255 karaktera.")
     @Column(name = "adresa")
