@@ -23,6 +23,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Sertifikat implements Serializable{
     
     /**
@@ -30,6 +31,7 @@ public class Sertifikat implements Serializable{
      * Generise se automatski na strani baze koriscenjem IDENTITY strategije.
      * Maksimalna duzina je 20 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -40,6 +42,7 @@ public class Sertifikat implements Serializable{
      * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @Column
     @NotBlank(message = "Naziv sertifikata je obavezan")
     @Size(max = 255, message = "Naziv sertifikata ne moze biti duzi od 255 karaktera")
