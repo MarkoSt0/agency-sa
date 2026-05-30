@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
     @NamedQuery(name = "Agent.findBySifra", query = "SELECT a FROM Agent a WHERE a.sifra = :sifra")})
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Agent implements Serializable {
 
     /**
@@ -43,6 +45,7 @@ public class Agent implements Serializable {
      * Jedinstveni identifikator agenta u bazi podataka (Primarni kljuc).
      * Koristi se auto-inkrementna strategija (IDENTITY) za generisanje vrednosti.
      */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -77,6 +80,7 @@ public class Agent implements Serializable {
      * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 255 karaktera.
      */
+    @EqualsAndHashCode.Include
     @NotBlank(message = "Ime agenta je obavezno.")
     @Size(max = 255, message = "Ime ne sme biti buze od 255 karaktera.")
     @Basic(optional = false)

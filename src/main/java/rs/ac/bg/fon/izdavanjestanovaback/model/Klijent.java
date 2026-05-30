@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
     @NamedQuery(name = "Klijent.findByEmail", query = "SELECT k FROM Klijent k WHERE k.email = :email")})
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Klijent implements Serializable {
     /**
      * Identifikacioni broj za serijalizaciju objekta.
@@ -43,6 +45,7 @@ public class Klijent implements Serializable {
      * Generise se automatski koriscenjem IDENTITY strategije.
      * Vrednost ne sme biti null, a maksimalna vrednost odgovara BIGINT(20) koloni u bazi.
      */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -54,6 +57,7 @@ public class Klijent implements Serializable {
      * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @NotBlank(message = "Ime klijenta je obavezno.")
     @Size(max = 255, message = "Ime ne sme biti duže od 255 karaktera.")
     @Basic(optional = false)
