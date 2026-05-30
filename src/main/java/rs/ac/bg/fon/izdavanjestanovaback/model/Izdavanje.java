@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
     @NamedQuery(name = "Izdavanje.findByNapomena", query = "SELECT i FROM Izdavanje i WHERE i.napomena = :napomena")})
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Izdavanje implements Serializable {
 
     /**
@@ -43,6 +45,7 @@ public class Izdavanje implements Serializable {
      * Jedinstveni identifikator izdavanja (Primarni kljuc).
      * Generise se automatski u bazi podataka koriscenjem IDENTITY strategije.
      */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -65,6 +68,7 @@ public class Izdavanje implements Serializable {
      * Polje je obavezno, ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 255 karaktera.
      */
+    @EqualsAndHashCode.Include
     @NotBlank(message = "Status ugovora je obavezan.")
     @Size(max = 255, message = "Status ugovora ne sme biti duzi od 255 karaktera.")
     @Column(name = "statusUgovora")
