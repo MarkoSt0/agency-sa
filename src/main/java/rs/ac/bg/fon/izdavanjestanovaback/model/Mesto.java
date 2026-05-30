@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
     @NamedQuery(name = "Mesto.findByOpstina", query = "SELECT m FROM Mesto m WHERE m.opstina = :opstina")})
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Mesto implements Serializable {
 
     /**
@@ -35,6 +37,7 @@ public class Mesto implements Serializable {
      * Jedinstveni identifikator mesta u bazi podataka (Primarni kljuc).
      * Generise se automatski koriscenjem IDENTITY strategije.
      */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -46,6 +49,7 @@ public class Mesto implements Serializable {
      * Polje je obavezno i ne sme biti null niti sadrzati samo razmake.
      * Maksimalna duzina je 255 karaktera sto odgovara ogranicenju kolone u bazi.
      */
+    @EqualsAndHashCode.Include
     @NotBlank(message = "Naziv mesta je obavezan.")
     @Size(max = 255, message = "Naziv mesta ne sme biti duzi od 255 karaktera.")
     @Basic(optional = false)
