@@ -22,5 +22,5 @@ Ovaj projekat predstavlja full-stack web aplikaciju za poslovanje agencije za ne
 
 ### Pokretanje projekta:
 1. **Backend:** Potreban Maven i Java 17+. Pokrenuti glavnu Spring Boot aplikaciju.
-2. **Frontend:** Izvršiti komande `npm install` i `npm start` unutar React direktorijuma.
-3. **Baza podataka:** Importovati priloženu SQL skriptu iz korenskog foldera projekta.
+2. **Frontend:** Izvršiti komande `npm install` i `npm start` unutar React direktorijuma. Projekat se nalazi na linku: `https://github.com/MarkoSt0/sa-agency-front`
+3. **Baza podataka:** Importovati priloženu SQL skriptu iz foldera projekta (H2 baza).
